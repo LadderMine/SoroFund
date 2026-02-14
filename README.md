@@ -50,7 +50,7 @@ sorofund/
 │
 ├── contracts/
 │   ├── campaign/           Soroban escrow — holds funds, enforces milestones, handles releases & refunds
-│   ├── reviewer/           On-chain reviewer registry — tracks who can vote on which campaigns  
+│   ├── reviewer/           On-chain reviewer registry — tracks who can vote on which campaigns
 │   └── governance/         Dispute resolution — handles appeals when milestones are rejected
 │
 ├── apps/
@@ -81,7 +81,6 @@ sorofund/
 │   ├── shared/             Types, enums, constants shared between api and web
 │   └── stellar-helpers/    Transaction builders, Soroban invocation wrappers
 │
-├── docker-compose.yml
 ├── turbo.json
 └── README.md
 ```
@@ -95,6 +94,7 @@ sorofund/
 This is the heart of SoroFund. One contract instance manages all campaigns (no per-campaign deployment — that would be wasteful and expensive). Each campaign is stored as structured data keyed by a unique campaign ID.
 
 **What it stores on-chain:**
+
 - Campaign metadata hash (actual metadata lives off-chain in PostgreSQL; the hash ensures integrity)
 - Creator address
 - Funding goal and deadline (ledger timestamp)
@@ -103,6 +103,7 @@ This is the heart of SoroFund. One contract instance manages all campaigns (no p
 - Campaign state enum: `Funding` → `Active` → `Completed` | `Failed` | `Cancelled`
 
 **What it enforces:**
+
 - Backers can only pledge during the `Funding` phase, before the deadline
 - If the goal isn't met by the deadline, the campaign transitions to `Failed` and all backers can call `refund()` to reclaim their USDC
 - Milestone funds are only released when the Reviewer contract confirms a passing vote (2-of-3)
